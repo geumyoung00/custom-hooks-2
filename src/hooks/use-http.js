@@ -4,13 +4,13 @@ const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  //   console.log(reqConfig);
+  //   console.log(newData);
+
   // reqConfig = {url, method, body, headers }
-  const useConfig = useCallback(async (reqConfig, newData) => {
+  const callHttp = useCallback(async (getTasks, reqConfig) => {
     setIsLoading(true);
     setError(null);
-
-    console.log(reqConfig);
-    console.log(newData);
 
     try {
       const response = await fetch(reqConfig.url, {
@@ -22,16 +22,15 @@ const useHttp = () => {
       if (!response.ok) {
         throw new Error('Request failed!');
       }
-
       const data = await response.json();
-      newData(data);
+      getTasks(data);
     } catch (error) {
       setError(error.message || 'Something went wrong!');
     }
     setIsLoading(false);
   }, []);
 
-  return { isLoading, error, useConfig };
+  return { isLoading, error, callHttp };
 };
 
 export default useHttp;

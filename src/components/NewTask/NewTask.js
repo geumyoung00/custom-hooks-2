@@ -1,13 +1,12 @@
 import { useState } from 'react';
-
 import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 
-const NewTask = (props) => {
+const NewTask = (taskText) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const enterTaskHandler = async (taskText) => {
+  const enterTaskHandler = async (props) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -29,6 +28,7 @@ const NewTask = (props) => {
       const data = await response.json();
 
       const generatedId = data.name; // firebase에서만 해당하는 부분 => "name"은 생성된 id
+
       const createdTask = { id: generatedId, text: taskText };
 
       props.onAddTask(createdTask);

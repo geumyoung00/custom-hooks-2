@@ -3,19 +3,18 @@ import Tasks from './components/Tasks/Tasks';
 import NewTask from './components/NewTask/NewTask';
 import useHttp from './hooks/use-http';
 
+const reqConfig = {
+  url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
+  method: 'GET',
+  body: null,
+  headers: {},
+};
+
 function App() {
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
-  const [tasks, setTasks] = useState([]);
 
-  const apiData = {
-    url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
-    method: 'GET',
-    body: null,
-    headers: {},
-  };
-
-  const taskData = (data) => {
+  const getTasks = (data) => {
     const loadedTasks = [];
     for (const taskKey in data) {
       loadedTasks.push({ id: taskKey, text: data[taskKey].text });
@@ -23,11 +22,8 @@ function App() {
     setTasks(loadedTasks);
   };
 
-  const {
-    isLoading,
-    error,
-    useConfig: fetchTasks,
-  } = useHttp(apiData, taskData);
+  const { isLoading, error, callHttp: fetchTasks } = useHttp();
+  const [tasks, setTasks] = useState([]);
 
   // const fetchTasks = async () => {
   // setIsLoading(true);
@@ -52,7 +48,7 @@ function App() {
   // };
 
   useEffect(() => {
-    fetchTasks();
+    fetchTasks(getTasks, reqConfig);
   }, [fetchTasks]);
 
   const taskAddHandler = (task) => {

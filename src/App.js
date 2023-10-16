@@ -6,12 +6,13 @@ import useHttp from './hooks/use-http';
 function App() {
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
+  const [tasks, setTasks] = useState([]);
 
   const apiData = {
     url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
     method: 'GET',
     body: null,
-    headers: '',
+    headers: {},
   };
 
   const taskData = (data) => {
@@ -19,7 +20,6 @@ function App() {
     for (const taskKey in data) {
       loadedTasks.push({ id: taskKey, text: data[taskKey].text });
     }
-
     setTasks(loadedTasks);
   };
 
@@ -28,8 +28,6 @@ function App() {
     error,
     useConfig: fetchTasks,
   } = useHttp(apiData, taskData);
-
-  const [tasks, setTasks] = useState([]);
 
   // const fetchTasks = async () => {
   // setIsLoading(true);
@@ -55,7 +53,7 @@ function App() {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
   const taskAddHandler = (task) => {
     setTasks((prevTasks) => prevTasks.concat(task));

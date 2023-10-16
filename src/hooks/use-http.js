@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
-const useHttp = (apiData, newData) => {
+const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // apiData = {url, method, body, headers }
-  const useConfig = async () => {
+  // reqConfig = {url, method, body, headers }
+  const useConfig = useCallback(async (reqConfig, newData) => {
     setIsLoading(true);
     setError(null);
+
+    console.log(reqConfig);
+    console.log(newData);
+
     try {
-      const response = await fetch(apiData.url, {
-        method: apiData.method,
-        body: JSON.stringify(apiData.body),
-        headers: apiData.headers,
+      const response = await fetch(reqConfig.url, {
+        method: reqConfig.method,
+        body: reqConfig.body ? JSON.stringify(reqConfig.body) : null,
+        headers: reqConfig.headers,
       });
 
       if (!response.ok) {
@@ -25,7 +29,7 @@ const useHttp = (apiData, newData) => {
       setError(error.message || 'Something went wrong!');
     }
     setIsLoading(false);
-  };
+  }, []);
 
   return { isLoading, error, useConfig };
 };

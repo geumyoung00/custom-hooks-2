@@ -6,15 +6,8 @@ import useHttp from '../../hooks/use-http';
 const NewTask = (props) => {
   console.log('props', props);
 
-  const reqConfig = {
-    url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
-    method: 'POST',
-    body: { text: 'taskText' },
-    headers: { 'Content-Type': 'application/json' },
-  };
-
   const enterTaskHandler = async (taskText, data) => {
-    const getTasks = (data) => {
+    const getTasks = () => {
       // console.log('taskText___', taskText);
       // console.log('data___', data);
 
@@ -22,11 +15,19 @@ const NewTask = (props) => {
       // firebase에서만 해당하는 부분 => "name"은 생성된 id
       const createdTask = { id: generatedId, text: data.taskText };
       props.onAddTask(createdTask);
+
+      console.log('generatedId__', generatedId);
+    };
+
+    const reqConfig = {
+      url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
+      method: 'POST',
+      body: { text: taskText },
+      headers: { 'Content-Type': 'application/json' },
     };
 
     callHttp(getTasks, reqConfig);
 
-    console.log('data___', data);
     console.log('taskText', taskText);
   };
 

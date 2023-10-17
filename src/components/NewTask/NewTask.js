@@ -3,8 +3,8 @@ import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 import useHttp from '../../hooks/use-http';
 
-const NewTask = (data) => {
-  console.log('data___', data);
+const NewTask = (props) => {
+  console.log('props', props);
 
   const reqConfig = {
     url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
@@ -13,7 +13,7 @@ const NewTask = (data) => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const enterTaskHandler = async (props, taskText) => {
+  const enterTaskHandler = async (taskText, data) => {
     const getTasks = (data) => {
       // console.log('taskText___', taskText);
       // console.log('data___', data);
@@ -24,9 +24,10 @@ const NewTask = (data) => {
       props.onAddTask(createdTask);
     };
 
-    console.log('props___2', props);
-
     callHttp(getTasks, reqConfig);
+
+    console.log('data___', data);
+    console.log('taskText', taskText);
   };
 
   const { isLoading, error, callHttp } = useHttp();

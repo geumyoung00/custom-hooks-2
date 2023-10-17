@@ -3,26 +3,29 @@ import Section from '../UI/Section';
 import TaskForm from './TaskForm';
 import useHttp from '../../hooks/use-http';
 
-const NewTask = (taskText) => {
+const NewTask = (data) => {
   const reqConfig = {
     url: 'https://react-http-af8a7-default-rtdb.firebaseio.com/tasks.json',
     method: 'POST',
-    body: { text: taskText },
+    body: { text: 'taskText' },
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const getTasks = (taskText, data) => {
-    const generatedId = data.name; // firebase에서만 해당하는 부분 => "name"은 생성된 id
-    const createdTask = { id: generatedId, text: taskText };
-    data.onAddTask(createdTask);
+  const enterTaskHandler = async (props, taskText) => {
+    const getTasks = (data) => {
+      console.log('taskText___', taskText);
+      console.log('data___', data);
+
+      const generatedId = data.name;
+      // firebase에서만 해당하는 부분 => "name"은 생성된 id
+      const createdTask = { id: generatedId, text: data.taskText };
+      props.onAddTask(createdTask);
+    };
+
+    callHttp(getTasks, reqConfig);
   };
 
-  const { isLoading, error, callHttp } = useHttp(reqConfig, getTasks);
-
-  const enterTaskHandler = async (taskText, data) => {
-    console.log('taskText__', taskText);
-    callHttp.bind(null, taskText);
-  };
+  const { isLoading, error, callHttp } = useHttp();
 
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);

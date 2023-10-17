@@ -18,15 +18,14 @@ const useHttp = () => {
         body: reqConfig.body ? JSON.stringify(reqConfig.body) : null,
         headers: reqConfig.headers,
       });
-      console.log('response__', response);
 
       if (!response.ok) {
         throw new Error('Request failed!');
       }
       const data = await response.json();
-
       getTasks(data);
     } catch (error) {
+      console.error(error);
       setError(error.message || 'Something went wrong!');
     }
     setIsLoading(false);

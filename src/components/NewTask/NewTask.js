@@ -4,19 +4,13 @@ import TaskForm from './TaskForm';
 import useHttp from '../../hooks/use-http';
 
 const NewTask = (props) => {
-  console.log('props', props);
-
-  const enterTaskHandler = async (taskText, data) => {
-    const getTasks = () => {
-      // console.log('taskText___', taskText);
-      // console.log('data___', data);
-
+  const enterTaskHandler = async (taskText) => {
+    const getTasks = (data) => {
+      console.log('data___', data);
       const generatedId = data.name;
       // firebase에서만 해당하는 부분 => "name"은 생성된 id
-      const createdTask = { id: generatedId, text: data.taskText };
+      const createdTask = { id: generatedId, text: taskText };
       props.onAddTask(createdTask);
-
-      console.log('generatedId__', generatedId);
     };
 
     const reqConfig = {
@@ -27,8 +21,6 @@ const NewTask = (props) => {
     };
 
     callHttp(getTasks, reqConfig);
-
-    console.log('taskText', taskText);
   };
 
   const { isLoading, error, callHttp } = useHttp();
